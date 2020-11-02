@@ -1,5 +1,6 @@
 import { Value, ValueShell } from "../../lib/data/Value";
 import { Connection } from "../database/Connection";
+import { User } from "../../lib/data/User";
 
 export class ValueTable {
   /**
@@ -10,12 +11,24 @@ export class ValueTable {
     return await Connection.list<Value>(ValueTable.table);
   }
   static async update(value: Value) {
-    await Connection.update<Value>(ValueTable.table, value);
+    return await Connection.update<Value>(ValueTable.table, value);
   }
   static async insert(value: ValueShell) {
-    await Connection.insert<ValueShell>(ValueTable.table, value);
+    console.log(" value", value);
+    return await Connection.insert<ValueShell>(ValueTable.table, value);
   }
   static async insertIgnoreFailure(value: ValueShell) {
-    await Connection.insertIgnoreFailure<ValueShell>(ValueTable.table, value);
+    return await Connection.insertIgnoreFailure<ValueShell>(
+      ValueTable.table,
+      value
+    );
+  }
+  /**
+   * Filtered reading
+   */
+  static async listForUser(user: User): Promise<Value[]> {
+    const connection = await Connection.connect();
+    const query = connection.select("*").from(ValueTable.table);
+    return await query.where("user_id", user.id);
   }
 }

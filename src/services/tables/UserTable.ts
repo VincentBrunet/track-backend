@@ -10,12 +10,15 @@ export class UserTable {
     return await Connection.list<User>(UserTable.table);
   }
   static async update(value: User) {
-    await Connection.update<User>(UserTable.table, value);
+    return await Connection.update<User>(UserTable.table, value);
   }
   static async insert(value: UserShell) {
-    await Connection.insert<UserShell>(UserTable.table, value);
+    return await Connection.insert<UserShell>(UserTable.table, value);
   }
   static async insertIgnoreFailure(value: UserShell) {
-    await Connection.insertIgnoreFailure<UserShell>(UserTable.table, value);
+    return await Connection.insertIgnoreFailure<UserShell>(
+      UserTable.table,
+      value
+    );
   }
 }

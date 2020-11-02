@@ -1,4 +1,4 @@
-import { Tag, TagShell } from "../../lib/data/Tag";
+import { Tag, TagShell, TagId, TagCode } from "../../lib/data/Tag";
 import { Connection } from "../database/Connection";
 import { User } from "../../lib/data/User";
 
@@ -11,13 +11,16 @@ export class TagTable {
     return await Connection.list<Tag>(TagTable.table);
   }
   static async update(value: Tag) {
-    await Connection.update<Tag>(TagTable.table, value);
+    return await Connection.update<Tag>(TagTable.table, value);
   }
   static async insert(value: TagShell) {
-    await Connection.insert<TagShell>(TagTable.table, value);
+    return await Connection.insert<TagShell>(TagTable.table, value);
   }
   static async insertIgnoreFailure(value: TagShell) {
-    await Connection.insertIgnoreFailure<TagShell>(TagTable.table, value);
+    return await Connection.insertIgnoreFailure<TagShell>(
+      TagTable.table,
+      value
+    );
   }
   /**
    * Filtered reading
@@ -26,5 +29,24 @@ export class TagTable {
     const connection = await Connection.connect();
     const query = connection.select("*").from(TagTable.table);
     return await query.where("user_id", user.id);
+  }
+  /**
+   * Indexed reading
+   */
+  static async mapByIdForUser(user: User) {
+    const list = await TagTable.listForUser(user);
+    const mapping = new Map<TagId, Tag>();
+    for (const item of list) {
+      mapping.set(item.id, item);
+    }
+    return mapping;
+  }
+  static async mapByCodeForUser(user: User) {
+    const list = await TagTable.listForUser(user);
+    const mapping = new Map<TagCode, Tag>();
+    for (const item of list) {
+      mapping.set(item.code, item);
+    }
+    return mapping;
   }
 }

@@ -61,7 +61,7 @@ export class Connection {
       console.log("insert", value);
     }
     const connection = await Connection.connect();
-    return await connection.insert(value).into(table);
+    return await connection.insert(value).into(table).returning("*");
   }
   static async insertBatch<T extends ModelShell>(table: string, values: T[]) {
     if (debug) {

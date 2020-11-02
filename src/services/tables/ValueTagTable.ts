@@ -10,13 +10,16 @@ export class ValueTagTable {
     return await Connection.list<ValueTag>(ValueTagTable.table);
   }
   static async update(ValueTag: ValueTag) {
-    await Connection.update<ValueTag>(ValueTagTable.table, ValueTag);
+    return await Connection.update<ValueTag>(ValueTagTable.table, ValueTag);
   }
   static async insert(ValueTag: ValueTagShell) {
-    await Connection.insert<ValueTagShell>(ValueTagTable.table, ValueTag);
+    return await Connection.insert<ValueTagShell>(
+      ValueTagTable.table,
+      ValueTag
+    );
   }
   static async insertIgnoreFailure(ValueTag: ValueTagShell) {
-    await Connection.insertIgnoreFailure<ValueTagShell>(
+    return await Connection.insertIgnoreFailure<ValueTagShell>(
       ValueTagTable.table,
       ValueTag
     );
