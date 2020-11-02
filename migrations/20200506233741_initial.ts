@@ -36,9 +36,10 @@ export async function up(knex: Knex): Promise<any> {
         .inTable("user")
         .notNullable();
 
-      table.specificType("stamp", "double precision").notNullable();
-      table.specificType("value", "double precision").notNullable();
+      table.timestamp("stamp", { useTz: true }).notNullable();
 
+      table.text("title");
+      table.specificType("scalar", "double precision");
       table.text("comment");
     })
 

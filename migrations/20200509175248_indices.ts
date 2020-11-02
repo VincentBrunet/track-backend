@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<any> {
     .alterTable("value", (table: Knex.CreateTableBuilder) => {
       table.index("user_id");
     })
-    .alterTable("value", (table: Knex.CreateTableBuilder) => {
+    .alterTable("tag", (table: Knex.CreateTableBuilder) => {
       table.index("user_id");
     });
 }

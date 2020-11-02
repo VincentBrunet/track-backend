@@ -1,21 +1,18 @@
-import { Branded } from './../struct/Branded';
-import { MapMap } from './../struct/MapMap';
-import { MetricId } from './Metric';
-import { TickerId } from './Ticker';
-import { UnitId } from './Unit';
+import { Branded } from "./../struct/Branded";
+import { UserId } from "./User";
 
-export type ValueId = Branded<number, 'ValueId'>;
-export type ValueStamp = Branded<number, 'ValueStamp'>;
-export type ValueValue = Branded<number, 'ValueValue'>;
+export type ValueId = Branded<number, "ValueId">;
+export type ValueStamp = Branded<number, "ValueStamp">;
+export type ValueScalar = Branded<number, "ValueScalar">;
+export type ValueTitle = Branded<number, "ValueTitle">;
+export type ValueComment = Branded<number, "ValueComment">;
 export interface Value extends ValueShell {
   id: number;
 }
 export interface ValueShell {
-  ticker_id: TickerId;
-  metric_id: MetricId;
-  unit_id: UnitId;
+  user_id: UserId;
   stamp: ValueStamp;
-  value: ValueValue;
+  scalar?: ValueScalar;
+  title?: ValueTitle;
+  comment?: ValueComment;
 }
-
-export class ValueChunkTicker extends MapMap<MetricId, ValueStamp, Value> {}

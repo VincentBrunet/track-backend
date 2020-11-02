@@ -1,6 +1,6 @@
-import Knex from 'knex';
+import Knex from "knex";
 
-import knexfile from './../../config/knexfile';
+import knexfile from "./../../config/knexfile";
 
 const debug = false;
 
@@ -21,51 +21,51 @@ export class Connection {
   /**
    * Base operations
    */
-  static async get<T extends Model>(table: string, id: number) {
+  static async get<T extends Model>(table: string, id: number): Promise<T> {
     const connection = await Connection.connect();
-    const value = await connection.select('*').where('id', id).from(table);
+    const values = await connection.select("*").where("id", id).from(table);
     if (debug) {
-      console.log('get', value);
+      console.log("get", values[0]);
     }
-    return value;
+    return values[0];
   }
-  static async list<T extends Model>(table: string) {
+  static async list<T extends Model>(table: string): Promise<T[]> {
     const connection = await Connection.connect();
-    const values = await connection.select('*').from(table).orderBy('id');
+    const values = await connection.select("*").from(table).orderBy("id");
     if (debug) {
-      console.log('list', values);
+      console.log("list", values);
     }
     return values;
   }
   static async update<T extends Model>(table: string, value: T) {
     if (debug) {
-      console.log('update', value);
+      console.log("update", value);
     }
     const connection = await Connection.connect();
-    return await connection.update(value).where('id', value.id).from(table);
+    return await connection.update(value).where("id", value.id).from(table);
   }
   static async updateBatch<T extends Model>(table: string, values: T[]) {
     if (debug) {
-      console.log('update', values);
+      console.log("update", values);
     }
     if (!values) {
       return;
     }
     const connection = await Connection.connect();
     for (const value of values) {
-      await connection.update(value).where('id', value.id).from(table);
+      await connection.update(value).where("id", value.id).from(table);
     }
   }
   static async insert<T extends ModelShell>(table: string, value: T) {
     if (debug) {
-      console.log('insert', value);
+      console.log("insert", value);
     }
     const connection = await Connection.connect();
     return await connection.insert(value).into(table);
   }
   static async insertBatch<T extends ModelShell>(table: string, values: T[]) {
     if (debug) {
-      console.log('insert', values);
+      console.log("insert", values);
     }
     if (!values) {
       return;
@@ -77,7 +77,10 @@ export class Connection {
   /**
    * Base operations wrappers
    */
-  static async insertIgnoreFailure<T extends ModelShell>(table: string, value: T) {
+  static async insertIgnoreFailure<T extends ModelShell>(
+    table: string,
+    value: T
+  ) {
     try {
       await Connection.insert(table, value);
     } catch (e) {}
