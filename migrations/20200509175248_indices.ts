@@ -16,6 +16,6 @@ export async function down(knex: Knex): Promise<any> {
       table.dropIndex("user_id");
     })
     .alterTable("tag", (table: Knex.CreateTableBuilder) => {
-      table.dropIndex("tag_id");
+      table.dropIndex("user_id");
     });
 }

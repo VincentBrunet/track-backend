@@ -7,5 +7,6 @@ export interface Tag extends TagShell {
 }
 export interface TagShell {
   user_id: UserId;
+  code: string;
   name: string;
 }

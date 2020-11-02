@@ -21,9 +21,10 @@ export async function up(knex: Knex): Promise<any> {
         .inTable("user")
         .notNullable();
 
+      table.string("code", 255).notNullable();
       table.string("name", 255).notNullable();
 
-      table.unique(["name"]);
+      table.unique(["code"]);
     })
 
     .createTable("value", (table: Knex.CreateTableBuilder) => {
@@ -38,8 +39,8 @@ export async function up(knex: Knex): Promise<any> {
 
       table.timestamp("stamp", { useTz: true }).notNullable();
 
-      table.text("title");
       table.specificType("scalar", "double precision");
+      table.text("title");
       table.text("comment");
     })
 

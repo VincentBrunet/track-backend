@@ -1,4 +1,4 @@
-import { User, UserId, UserShell } from "../../lib/data/User";
+import { User, UserShell } from "../../lib/data/User";
 import { Connection } from "../database/Connection";
 
 export class UserTable {
