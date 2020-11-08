@@ -13,7 +13,7 @@ export class UserTable {
     return await Connection.update<User>(UserTable.table, value);
   }
   static async insert(value: UserShell) {
-    return await Connection.insert<UserShell>(UserTable.table, value);
+    return await Connection.insert<UserShell, User>(UserTable.table, value);
   }
   static async insertIgnoreFailure(value: UserShell) {
     return await Connection.insertIgnoreFailure<UserShell>(

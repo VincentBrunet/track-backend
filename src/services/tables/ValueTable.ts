@@ -14,8 +14,7 @@ export class ValueTable {
     return await Connection.update<Value>(ValueTable.table, value);
   }
   static async insert(value: ValueShell) {
-    console.log(" value", value);
-    return await Connection.insert<ValueShell>(ValueTable.table, value);
+    return await Connection.insert<ValueShell, Value>(ValueTable.table, value);
   }
   static async insertIgnoreFailure(value: ValueShell) {
     return await Connection.insertIgnoreFailure<ValueShell>(

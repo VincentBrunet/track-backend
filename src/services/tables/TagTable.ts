@@ -14,7 +14,7 @@ export class TagTable {
     return await Connection.update<Tag>(TagTable.table, value);
   }
   static async insert(value: TagShell) {
-    return await Connection.insert<TagShell>(TagTable.table, value);
+    return await Connection.insert(TagTable.table, value);
   }
   static async insertIgnoreFailure(value: TagShell) {
     return await Connection.insertIgnoreFailure<TagShell>(

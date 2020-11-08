@@ -56,12 +56,16 @@ export class Connection {
       await connection.update(value).where("id", value.id).from(table);
     }
   }
-  static async insert<T extends ModelShell>(table: string, value: T) {
+  static async insert<T extends ModelShell, R extends Model>(
+    table: string,
+    value: T
+  ): Promise<R> {
     if (debug) {
       console.log("insert", value);
     }
     const connection = await Connection.connect();
-    return await connection.insert(value).into(table).returning("*");
+    const result = await connection.insert(value).into(table).returning("*");
+    return result[0];
   }
   static async insertBatch<T extends ModelShell>(table: string, values: T[]) {
     if (debug) {

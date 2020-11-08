@@ -7,7 +7,7 @@ export type ValueScalar = Branded<number, "ValueScalar">;
 export type ValueTitle = Branded<number, "ValueTitle">;
 export type ValueComment = Branded<number, "ValueComment">;
 export interface Value extends ValueShell {
-  id: number;
+  id: ValueId;
 }
 export interface ValueShell {
   user_id: UserId;

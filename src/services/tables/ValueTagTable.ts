@@ -13,7 +13,7 @@ export class ValueTagTable {
     return await Connection.update<ValueTag>(ValueTagTable.table, ValueTag);
   }
   static async insert(ValueTag: ValueTagShell) {
-    return await Connection.insert<ValueTagShell>(
+    return await Connection.insert<ValueTagShell, ValueTag>(
       ValueTagTable.table,
       ValueTag
     );
