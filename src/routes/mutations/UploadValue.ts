@@ -1,23 +1,18 @@
-import { TagTable } from "../../services/tables/TagTable";
+import { TagCode, TagName, TagShell } from "../../lib/data/Tag";
 import { User } from "../../lib/data/User";
-import { RouteWithAuth } from "../RouteWithAuth";
-import { ValueTable } from "../../services/tables/ValueTable";
-import { TagShell, TagCode, TagName } from "../../lib/data/Tag";
 import {
-  ValueStamp,
-  ValueScalar,
   ValueComment,
+  ValueScalar,
+  ValueStamp,
   ValueTitle,
 } from "../../lib/data/Value";
+import { TagTable } from "../../services/tables/TagTable";
+import { ValueTable } from "../../services/tables/ValueTable";
 import { ValueTagTable } from "../../services/tables/ValueTagTable";
+import { RouteWithAuth } from "../RouteWithAuth";
 
 export class UploadValue extends RouteWithAuth {
   async runWithAuth(user: User, param: any) {
-    param = {
-      tags: ["A", "B", "C"],
-      scalar: 1,
-    };
-
     const tagsByCodeBefore = await TagTable.mapByCodeForUser(user);
 
     const paramTags = param.tags;

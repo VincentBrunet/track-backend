@@ -1,9 +1,8 @@
-import express from 'express';
-import cors from 'cors';
+import cors from "cors";
+import express from "express";
 
-import { Route } from './routes/Route';
-
-import { Cron } from './crons/Cron';
+import { Cron } from "./crons/Cron";
+import { Route } from "./routes/Route";
 
 export class App {
   private app: express.Application;
@@ -18,8 +17,13 @@ export class App {
   protected setup() {}
 
   protected get(path: string, handler: new () => Route) {
-    console.log('route:register', 'GET', path);
+    console.log("route:register", "GET", path);
     this.app.get(path, this.make(new handler()));
+  }
+
+  protected post(path: string, handler: new () => Route) {
+    console.log("route:register", "POST", path);
+    this.app.post(path, this.make(new handler()));
   }
 
   protected make(route: Route) {
@@ -28,10 +32,11 @@ export class App {
         const params = {};
         Object.assign(params, req.query);
         Object.assign(params, req.params);
-        console.log('route:run', req.method, req.route.path, params);
+        Object.assign(params, req.body);
+        console.log("route:run", req.method, req.route.path, params);
         const json = await route.run(params);
         res.status(200);
-        res.header('Content-Type', 'application/json');
+        res.header("Content-Type", "application/json");
         res.send({
           success: true,
           error: null,
@@ -44,7 +49,7 @@ export class App {
           error: {
             code: e.code,
             message: e.message,
-            stack: e.stack.split('\n'),
+            stack: e.stack.split("\n"),
           },
           data: null,
         });
@@ -54,21 +59,26 @@ export class App {
   }
 
   listen(port: number, done: () => void) {
-    console.log('app:listen', port);
+    console.log("app:listen", port);
     this.app.listen(port, done);
   }
 
-  protected run(name: string, type: new () => Cron, delay: number, repeat: number) {
-    console.log('cron:register', name);
+  protected run(
+    name: string,
+    type: new () => Cron,
+    delay: number,
+    repeat: number
+  ) {
+    console.log("cron:register", name);
     const cron = new type();
     const runner = async () => {
-      console.log('cron:start', name);
+      console.log("cron:start", name);
       try {
         await cron.run();
       } catch (e) {
-        console.log('cron:error', e);
+        console.log("cron:error", e);
       }
-      console.log('cron:end', name);
+      console.log("cron:end", name);
       setTimeout(() => {
         runner();
       }, repeat);
