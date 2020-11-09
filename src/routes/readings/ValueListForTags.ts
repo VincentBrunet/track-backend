@@ -47,9 +47,13 @@ export class ValueListForTags extends RouteWithAuth {
       }
     }
 
-    if (param.sort === "stamp") {
+    if (param.sort === "asc") {
       values.sort((a, b) => {
         return a.stamp.valueOf() - b.stamp.valueOf();
+      });
+    } else if (param.sort === "desc") {
+      values.sort((a, b) => {
+        return b.stamp.valueOf() - a.stamp.valueOf();
       });
     }
 
