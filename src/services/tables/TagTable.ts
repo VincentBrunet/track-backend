@@ -1,12 +1,12 @@
-import { Tag, TagShell, TagId, TagCode } from "../../lib/data/Tag";
-import { Connection } from "../database/Connection";
+import { Tag, TagCode, TagId, TagShell } from "../../lib/data/Tag";
 import { User } from "../../lib/data/User";
+import { Connection } from "../database/Connection";
 
 export class TagTable {
   /**
    * Base
    */
-  private static table = "tag";
+  static table = "tag";
   static async list(): Promise<Tag[]> {
     return await Connection.list<Tag>(TagTable.table);
   }

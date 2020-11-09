@@ -11,7 +11,7 @@ import { ValueTable } from "../../services/tables/ValueTable";
 import { ValueTagTable } from "../../services/tables/ValueTagTable";
 import { RouteWithAuth } from "../RouteWithAuth";
 
-export class UploadValue extends RouteWithAuth {
+export class ValueUpload extends RouteWithAuth {
   async runWithAuth(user: User, param: any) {
     const tagsByCodeBefore = await TagTable.mapByCodeForUser(user);
 

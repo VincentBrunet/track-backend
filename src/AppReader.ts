@@ -1,15 +1,18 @@
 import { App } from "./App";
-import { TagList } from "./routes/indices/TagList";
-import { UserList } from "./routes/indices/UserList";
-import { ValueList } from "./routes/indices/ValueList";
-import { UploadValue } from "./routes/mutations/UploadValue";
+import { ValueUpload } from "./routes/mutations/ValueUpload";
+import { TagList } from "./routes/readings/TagList";
+import { ValueListForTag } from "./routes/readings/ValueListForTag";
+import { ValueListForTags } from "./routes/readings/ValueListForTags";
+import { ValueListRecent } from "./routes/readings/ValueListRecent";
 
 export class AppReader extends App {
   protected setup() {
-    this.get("/indices/value-list", ValueList);
-    this.get("/indices/user-list", UserList);
-    this.get("/indices/tag-list", TagList);
+    this.get("/readings/tag-list", TagList);
 
-    this.post("/mutations/upload-value", UploadValue);
+    this.get("/readings/value-list-recent", ValueListRecent);
+    this.get("/readings/value-list-for-tag", ValueListForTag);
+    this.get("/readings/value-list-for-tags", ValueListForTags);
+
+    this.post("/mutations/value-upload", ValueUpload);
   }
 }

@@ -5,7 +5,7 @@ export class ValueTagTable {
   /**
    * Base
    */
-  private static table = "value_tag";
+  static table = "value_tag";
   static async list(): Promise<ValueTag[]> {
     return await Connection.list<ValueTag>(ValueTagTable.table);
   }

@@ -5,7 +5,7 @@ export class UserTable {
   /**
    * Base
    */
-  private static table = "user";
+  static table = "user";
   static async list(): Promise<User[]> {
     return await Connection.list<User>(UserTable.table);
   }

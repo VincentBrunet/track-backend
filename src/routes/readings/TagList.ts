@@ -1,5 +1,5 @@
-import { TagTable } from "../../services/tables/TagTable";
 import { User } from "../../lib/data/User";
+import { TagTable } from "../../services/tables/TagTable";
 import { RouteWithAuth } from "../RouteWithAuth";
 
 export class TagList extends RouteWithAuth {
