@@ -4,23 +4,14 @@ import { Connection } from "../database/Connection";
 
 export class TagTable {
   /**
-   * Base
+   * Base utilities
    */
   static table = "tag";
-  static async list(): Promise<Tag[]> {
-    return await Connection.list<Tag>(TagTable.table);
-  }
   static async update(value: Tag) {
     return await Connection.update<Tag>(TagTable.table, value);
   }
   static async insert(value: TagShell) {
     return await Connection.insert(TagTable.table, value);
-  }
-  static async insertIgnoreFailure(value: TagShell) {
-    return await Connection.insertIgnoreFailure<TagShell>(
-      TagTable.table,
-      value
-    );
   }
   /**
    * Filtered reading
@@ -28,12 +19,13 @@ export class TagTable {
   static async listForUser(user: User): Promise<Tag[]> {
     const connection = await Connection.connect();
     const query = connection.select("*").from(TagTable.table);
-    return await query.where("user_id", user.id);
+    query.where("user_id", user.id);
+    return await query;
   }
   /**
    * Indexed reading
    */
-  static async mapByIdForUser(user: User) {
+  static async mapByIdForUser(user: User): Promise<Map<TagId, Tag>> {
     const list = await TagTable.listForUser(user);
     const mapping = new Map<TagId, Tag>();
     for (const item of list) {
@@ -41,7 +33,7 @@ export class TagTable {
     }
     return mapping;
   }
-  static async mapByCodeForUser(user: User) {
+  static async mapByCodeForUser(user: User): Promise<Map<TagCode, Tag>> {
     const list = await TagTable.listForUser(user);
     const mapping = new Map<TagCode, Tag>();
     for (const item of list) {

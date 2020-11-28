@@ -1,6 +1,5 @@
 import cors from "cors";
 import express from "express";
-
 import { Cron } from "./crons/Cron";
 import { Route } from "./routes/Route";
 
@@ -33,7 +32,6 @@ export class App {
         Object.assign(params, req.query);
         Object.assign(params, req.params);
         Object.assign(params, req.body);
-        console.log("route:run", req.method, req.route.path, params);
         const json = await route.run(params);
         res.status(200);
         res.header("Content-Type", "application/json");
@@ -43,7 +41,7 @@ export class App {
           data: json,
         });
       } catch (e) {
-        res.status(500);
+        res.status(e.statusCode ?? 500);
         res.json({
           success: false,
           error: {
@@ -55,7 +53,19 @@ export class App {
         });
         res.end();
       }
+      this.log(req, res);
     };
+  }
+
+  private log(req: express.Request, res: express.Response) {
+    console.log(
+      "route:run",
+      req.method,
+      req.route.path,
+      "-->",
+      res.statusCode,
+      res.statusMessage
+    );
   }
 
   listen(port: number, done: () => void) {

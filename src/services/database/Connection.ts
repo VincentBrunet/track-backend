@@ -1,5 +1,4 @@
 import Knex from "knex";
-
 import knexfile from "./../../config/knexfile";
 
 const debug = false;
@@ -21,13 +20,31 @@ export class Connection {
   /**
    * Base operations
    */
-  static async get<T extends Model>(table: string, id: number): Promise<T> {
+  static async getById<T extends Model>(
+    table: string,
+    id: number
+  ): Promise<T | undefined> {
     const connection = await Connection.connect();
     const values = await connection.select("*").where("id", id).from(table);
     if (debug) {
-      console.log("get", values[0]);
+      console.log("getById", values);
     }
-    return values[0];
+    if (values.length >= 0) {
+      return values[0];
+    } else {
+      return undefined;
+    }
+  }
+  static async getByIds<T extends Model>(
+    table: string,
+    ids: number[]
+  ): Promise<T[]> {
+    const connection = await Connection.connect();
+    const values = await connection.select("*").whereIn("id", ids).from(table);
+    if (debug) {
+      console.log("getByIds", values);
+    }
+    return values;
   }
   static async list<T extends Model>(table: string): Promise<T[]> {
     const connection = await Connection.connect();

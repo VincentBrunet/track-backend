@@ -1,27 +1,28 @@
-import { TagId } from "./../../lib/data/Tag";
 import { User } from "../../lib/data/User";
 import { Value, ValueId } from "../../lib/data/Value";
 import { TagTable } from "../../services/tables/TagTable";
 import { ValueTable } from "../../services/tables/ValueTable";
-import { ErrorNotFound } from "./../utils/ErrorNotFound";
 import { RouteWithAuth } from "../RouteWithAuth";
+import { TagId } from "./../../lib/data/Tag";
+import { ErrorNotFound } from "./../utils/ErrorNotFound";
 
 export class ValueListForTags extends RouteWithAuth {
   async runWithAuth(user: User, param: any) {
+    // Resolve tags
+    const paramIds = param.tag_ids;
+    if (paramIds === undefined || paramIds.length <= 0) {
+      throw new ErrorNotFound("no tag specified");
+    }
     const tagMapById = await TagTable.mapByIdForUser(user);
-    const tags = param.ids?.map((id: string) => {
+    const tags = paramIds.map((id: string) => {
       const tag = tagMapById.get(parseInt(id) as TagId);
       if (!tag) {
         throw new ErrorNotFound("tag not found: " + id);
       }
       return tag;
     });
-
+    // List all values for tags
     const tagCount = tags.length;
-    if (tagCount <= 0) {
-      throw new ErrorNotFound("no tag passed");
-    }
-
     const findsById = new Map<ValueId, number>();
     const valuesById = new Map<ValueId, Value>();
     for (const tag of tags) {
@@ -32,9 +33,8 @@ export class ValueListForTags extends RouteWithAuth {
         valuesById.set(id, value);
       }
     }
-
+    // Resolve the final set of values
     const values: Value[] = [];
-
     if (param.condition === "or") {
       for (const value of valuesById.values()) {
         values.push(value);
@@ -46,7 +46,7 @@ export class ValueListForTags extends RouteWithAuth {
         }
       }
     }
-
+    // Optionally sort
     if (param.sort === "asc") {
       values.sort((a, b) => {
         return a.stamp.valueOf() - b.stamp.valueOf();
@@ -56,7 +56,7 @@ export class ValueListForTags extends RouteWithAuth {
         return b.stamp.valueOf() - a.stamp.valueOf();
       });
     }
-
+    // Done
     return values;
   }
 }

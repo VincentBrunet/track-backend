@@ -1,6 +1,6 @@
 import { Branded } from "../struct/Branded";
-import { ValueId } from "./Value";
 import { TagId } from "./Tag";
+import { ValueId } from "./Value";
 
 export type ValueTagId = Branded<number, "ValueTagId">;
 export interface ValueTag extends ValueTagShell {

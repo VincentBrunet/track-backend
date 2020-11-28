@@ -1,19 +1,13 @@
-import { Route } from "./Route";
+import { User } from "../lib/data/User";
 import { UserTable } from "../services/tables/UserTable";
-import { User, UserEmail } from "../lib/data/User";
+import { Route } from "./Route";
 
 export class RouteWithAuth implements Route {
   async run(param: any) {
-    // TODO this is mocked
-    let users = await UserTable.list();
-    if (users.length < 1) {
-      await UserTable.insert({
-        email: "wincerouge@gmail.com" as UserEmail,
-      });
-      users = await UserTable.list();
-    }
+    // TODO - this is mocked for now
+    const user = await UserTable.demo();
     param.token = undefined;
-    return await this.runWithAuth(users[0], param);
+    return await this.runWithAuth(user, param);
   }
   async runWithAuth(user: User, param: any): Promise<any> {}
 }
